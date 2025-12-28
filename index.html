@@ -2,88 +2,132 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>حـديــد عــز الســادات</title>
+<title>حديد عز السادات | تحميل التطبيق</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    color: #fff;
-    text-align: center;
+* {
+    box-sizing: border-box;
 }
 
-.container {
-    padding: 40px 20px;
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: linear-gradient(180deg, #f3f4f6, #e5e7eb);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #222;
+}
+
+/* الكارد */
+.card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 24px;
+    padding: 30px 24px 35px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
 .app-icon {
-    width: 120px;
-    height: 120px;
+    width: 210px;
+    height: 110px;
     border-radius: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 h1 {
-    margin: 10px 0;
-    font-size: 26px;
+    margin: 10px 0 6px;
+    font-size: 24px;
+    color: #111;
 }
 
-p {
-    color: #ddd;
+.subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 18px;
+}
+
+.features {
+    text-align: right;
     font-size: 15px;
-    line-height: 1.6;
+    color: #374151;
+    margin: 20px 0 10px;
+    line-height: 1.9;
 }
 
+.features span {
+    display: block;
+}
+
+/* زر التحميل — اللون #FEA500 */
 .download-btn {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 16px 32px;
-    background: #00c853;
+    display: block;
+    margin: 28px auto 10px;
+    padding: 16px 0;
+    width: 100%;
+    background: #FEA500;
     color: #000;
     font-size: 18px;
     font-weight: bold;
-    border-radius: 40px;
+    border-radius: 50px;
     text-decoration: none;
-    transition: 0.3s;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 10px 25px rgba(254,165,0,0.45);
 }
 
 .download-btn:hover {
-    background: #00e676;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 35px rgba(254,165,0,0.6);
+}
+
+.version {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #6b7280;
 }
 
 .footer {
-    margin-top: 50px;
-    font-size: 13px;
-    color: #aaa;
+    margin-top: 14px;
+    font-size: 12px;
+    color: #9ca3af;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
 
-    <!-- لو عندك أيقونة للتطبيق ارفعها واستبدل الرابط -->
-    <img class="app-icon" src="https://raw.githubusercontent.com/USERNAME/REPO/main/icon.png">
+    <!-- أيقونة التطبيق -->
+    <img class="app-icon"
+         src="https://i.top4top.io/p_3649ro0yu0.jpg">
 
-    <h1>حـديــد عــز الســادات</h1>
+    <h1>حديد عز السادات</h1>
+    <div class="subtitle">تطبيق داخلي لخدمة الزملاء</div>
 
-    <p>
-    بث مباشر لإذاعة القرآن الكريم من القاهرة<br>
-    يعمل في الخلفية بدون انقطاع<br>
-    زر تشغيل وإيقاف مثل Spotify
-    </p>
+    <div class="features">
+        <span>✔ جداول الورادي والمناوبات</span>
+        <span>✔ العطلات الرسمية والإجازات</span>
+        <span>✔ الأرقام الداخلية وأرقام الطوارئ</span>
+        <span>✔ كل ما يحتاجه الزميل في مكان واحد</span>
+    </div>
 
-    <!-- ضع رابط الـ APK هنا -->
+    <!-- رابط التحميل -->
     <a class="download-btn"
        href="https://github.com/Tamer08/Ezzsteel/releases/download/v2.0/Ezzsadat026.apk">
-       تحميل التطبيق
+        تحميل التطبيق
     </a>
 
-    <div class="footer">
+    <div class="version">
         الإصدار 2.0 • Android
+    </div>
+
+    <div class="footer">
+        © 2025 حديد عز السادات
     </div>
 
 </div>
