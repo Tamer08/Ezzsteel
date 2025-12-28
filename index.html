@@ -6,9 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -18,10 +16,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #222;
 }
 
-/* الكارد */
 .card {
     background: #ffffff;
     width: 100%;
@@ -48,7 +44,21 @@ h1 {
 .subtitle {
     font-size: 14px;
     color: #6b7280;
+    margin-bottom: 10px;
+}
+
+.update-status {
+    font-size: 14px;
     margin-bottom: 18px;
+}
+
+.update-ok {
+    color: #16a34a;
+}
+
+.update-new {
+    color: #dc2626;
+    font-weight: bold;
 }
 
 .features {
@@ -63,7 +73,6 @@ h1 {
     display: block;
 }
 
-/* زر التحميل — اللون #FEA500 */
 .download-btn {
     display: block;
     margin: 28px auto 10px;
@@ -75,17 +84,11 @@ h1 {
     font-weight: bold;
     border-radius: 50px;
     text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
     box-shadow: 0 10px 25px rgba(254,165,0,0.45);
 }
 
-.download-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 35px rgba(254,165,0,0.6);
-}
-
 .version {
-    margin-top: 18px;
+    margin-top: 14px;
     font-size: 13px;
     color: #6b7280;
 }
@@ -102,12 +105,16 @@ h1 {
 
 <div class="card">
 
-    <!-- أيقونة التطبيق -->
     <img class="app-icon"
          src="https://i.top4top.io/p_3649ro0yu0.jpg">
 
     <h1>حديد عز السادات</h1>
     <div class="subtitle">تطبيق داخلي لخدمة الزملاء</div>
+
+    <!-- حالة التحديث -->
+    <div id="updateStatus" class="update-status">
+        جاري فحص التحديث...
+    </div>
 
     <div class="features">
         <span>✔ جداول الورادي والمناوبات</span>
@@ -116,14 +123,13 @@ h1 {
         <span>✔ كل ما يحتاجه الزميل في مكان واحد</span>
     </div>
 
-    <!-- رابط التحميل -->
-    <a class="download-btn"
+    <a id="downloadBtn" class="download-btn"
        href="https://github.com/Tamer08/Ezzsteel/releases/download/v2.0/Ezzsadat026.apk">
         تحميل التطبيق
     </a>
 
     <div class="version">
-        الإصدار 2.0 • Android
+        الإصدار الحالي: <strong id="currentVersion">2.0</strong>
     </div>
 
     <div class="footer">
@@ -131,6 +137,36 @@ h1 {
     </div>
 
 </div>
+
+<script>
+const currentVersion = "2.0";
+const repo = "Tamer08/Ezzsteel";
+
+fetch(`https://api.github.com/repos/${repo}/releases/latest`)
+.then(res => res.json())
+.then(data => {
+    const latestVersion = data.tag_name.replace("v","");
+    const status = document.getElementById("updateStatus");
+    const btn = document.getElementById("downloadBtn");
+
+    if (latestVersion !== currentVersion) {
+        // تحديث إجباري
+        status.innerHTML = "🚀 يوجد تحديث جديد: v" + latestVersion;
+        status.className = "update-status update-new";
+        btn.href = data.assets[0].browser_download_url;
+        btn.innerHTML = "تحديث الآن";
+        // منعه من المتابعة قبل التحديث
+        btn.setAttribute('target', '_blank');
+    } else {
+        status.innerHTML = "✅ أنت تستخدم أحدث إصدار";
+        status.className = "update-status update-ok";
+    }
+})
+.catch(() => {
+    document.getElementById("updateStatus").innerHTML =
+        "⚠️ تعذر فحص التحديث";
+});
+</script>
 
 </body>
 </html>
