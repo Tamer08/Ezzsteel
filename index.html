@@ -146,7 +146,7 @@ h1 {
     </div>
 
     <a id="downloadBtn" class="download-btn"
-       href="https://github.com/Tamer08/Ezzsteel/releases/download/v2.2/Ezzsadat.apk">
+       href="https://github.com/Tamer08/Ezzsteel/releases/download/v2.2/Ezzsadat.apk" onclick="checkConnection(event)">
         تحميل التطبيق
     </a>
 
@@ -174,6 +174,7 @@ h1 {
 const currentVersion = "2.2";
 const repo = "Tamer08/Ezzsteel";
 
+// فحص التحديثات
 fetch(`https://api.github.com/repos/${repo}/releases/latest`)
 .then(res => res.json())
 .then(data => {
@@ -195,6 +196,14 @@ fetch(`https://api.github.com/repos/${repo}/releases/latest`)
     document.getElementById("updateStatus").innerHTML =
         "⚠️ تعذر فحص التحديث";
 });
+
+// دالة للتحقق من الاتصال بالإنترنت قبل تحميل التطبيق
+function checkConnection(event) {
+    if (!navigator.onLine) {
+        event.preventDefault();  // إيقاف تحميل التطبيق
+        alert("⚠️ لا يوجد اتصال بالإنترنت! يُرجى الاتصال بالإنترنت لتحميل التطبيق.");
+    }
+}
 </script>
 
 </body>
