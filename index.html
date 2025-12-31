@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
 <style>
-/* --- التنسيقات العامة --- */
+/* نفس التنسيقات */
 * { box-sizing: border-box; }
 body {
     margin: 0; font-family: "Segoe UI", Tahoma, Arial, sans-serif;
@@ -26,7 +26,6 @@ h1 { margin: 10px 0 6px; font-size: 24px; color: #111; }
 .features { text-align: right; font-size: 15px; color: #374151; margin: 20px 0 10px; line-height: 1.9; }
 .features span { display: block; }
 
-/* --- تصميم الأزرار --- */
 .action-btn {
     display: block; margin: 28px auto 10px; padding: 16px 0; width: 100%;
     color: #fff; font-size: 18px; font-weight: bold;
@@ -36,13 +35,10 @@ h1 { margin: 10px 0 6px; font-size: 24px; color: #111; }
 }
 .action-btn:active { transform: scale(0.98); }
 
-/* ألوان الحالات */
-.btn-update { background: #FEA500; color: #000; } /* برتقالي (تحديث) */
-.btn-latest { background: #16a34a; } /* أخضر (محدث) */
-.btn-install { background: #2563eb; } /* أزرق (تثبيت) */
-.btn-browser { background: #333; } /* غامق (للمتصفح) */
+.btn-update { background: #FEA500; color: #000; } /* برتقالي للتحميل/التحديث */
+.btn-latest { background: #16a34a; cursor: default; } /* أخضر (غير فعال) */
+.btn-install { background: #2563eb; } /* أزرق للتثبيت */
 
-/* --- شريط التقدم --- */
 .progress-container { margin: 28px auto 10px; display: none; width: 100%; }
 .progress-label { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; font-weight: bold; color: #555; }
 .progress-bar-bg { width: 100%; height: 12px; background: #e5e7eb; border-radius: 10px; overflow: hidden; }
@@ -74,10 +70,8 @@ h1 { margin: 10px 0 6px; font-size: 24px; color: #111; }
         <span>✔ إشعارات التحديثات الفورية</span>
     </div>
 
-    <!-- الزر الرئيسي -->
     <button id="mainBtn" class="action-btn btn-latest">...</button>
 
-    <!-- شريط التحميل (مخفي) -->
     <div id="progressArea" class="progress-container">
         <div class="progress-label">
             <span>جاري التحميل...</span>
@@ -88,14 +82,12 @@ h1 { margin: 10px 0 6px; font-size: 24px; color: #111; }
         </div>
     </div>
 
-    <!-- رقم الإصدار -->
     <div class="version">
         الإصدار المثبت: <strong id="installedVer">...</strong>
     </div>
 
     <div class="footer">© 2026 حديد عز السادات</div>
 
-    <!-- روابط المشاركة -->
     <div class="social-share">
         <a href="https://wa.me/?text=حمل تطبيق حديد عز السادات: https://tamer08.github.io/Ezzsteel/" target="_blank"><i class="fab fa-whatsapp"></i></a>
         <a href="https://t.me/share/url?url=https://tamer08.github.io/Ezzsteel/" target="_blank"><i class="fab fa-telegram-plane"></i></a>
@@ -103,29 +95,22 @@ h1 { margin: 10px 0 6px; font-size: 24px; color: #111; }
 </div>
 
 <script>
-// إعدادات المستودع
-const repo = "Tamer08/Ezzsteel"; 
+const repo = "Tamer08/Ezzsteel";
 let downloadUrl = "";
 let savedFilePath = "";
 
-// 1. دالة استقبال الإصدار من التطبيق
+// استقبال الإصدار من التطبيق
 function setAppVersion(realVersion) {
-    // تنظيف الرقم من أي مسافات
-    let cleanVer = String(realVersion).trim();
-    document.getElementById("installedVer").innerText = cleanVer;
-    checkGitHubUpdates(cleanVer);
+    document.getElementById("installedVer").innerText = realVersion;
+    checkGitHubUpdates(realVersion);
 }
 
-// 2. فحص GitHub ومقارنة الإصدارات
+// فحص التحديثات
 function checkGitHubUpdates(currentVersion) {
     fetch(`https://api.github.com/repos/${repo}/releases/latest`)
     .then(res => res.json())
     .then(data => {
-        // === تنظيف الأرقام للمقارنة ===
-        // حذف حرف v وحذف المسافات والإبقاء على الأرقام والنقاط فقط
-        let serverVersion = String(data.tag_name).replace(/[^0-9.]/g, "");
-        let appVersion = String(currentVersion).replace(/[^0-9.]/g, "");
-
+        const latestVersion = data.tag_name.replace("v","");
         const btn = document.getElementById("mainBtn");
         const status = document.getElementById("updateStatus");
 
@@ -133,36 +118,38 @@ function checkGitHubUpdates(currentVersion) {
             downloadUrl = data.assets[0].browser_download_url;
         }
 
-        // === المنطق ===
+        // === المنطق الجديد ===
         
-        // هل نحن داخل التطبيق؟
+        // 1. هل نحن داخل التطبيق؟
         if (typeof Android !== 'undefined') {
             
-            if (serverVersion !== appVersion) {
-                // [حالة 1] يوجد تحديث جديد
-                status.innerHTML = "🚀 إصدار جديد متاح: " + serverVersion;
+            // نعم داخل التطبيق
+            if (latestVersion !== currentVersion) {
+                // يوجد تحديث
+                status.innerHTML = "🚀 إصدار جديد متاح: " + latestVersion;
                 status.style.color = "#dc2626"; // أحمر
                 btn.innerHTML = "تحديث التطبيق";
-                btn.className = "action-btn btn-update"; // برتقالي
+                btn.className = "action-btn btn-update";
+                btn.onclick = startDownload;
             } else {
-                // [حالة 2] التطبيق محدث (ولكن الزر يعمل لإعادة التحميل)
+                // محدث
                 status.innerHTML = "✅ أنت تستخدم أحدث إصدار";
                 status.style.color = "#16a34a"; // أخضر
-                btn.innerHTML = "إعادة تحميل التطبيق"; 
-                btn.className = "action-btn btn-latest"; // أخضر
+                btn.innerHTML = "التطبيق محدث";
+                btn.className = "action-btn btn-latest";
+                btn.onclick = null; // تعطيل الزر
             }
-            // تفعيل الزر في الحالتين
-            btn.onclick = startDownload;
 
         } else {
-            // [حالة 3] نحن في المتصفح (Chrome/Samsung)
-            status.innerHTML = "أحدث إصدار متاح: " + serverVersion;
+            // 2. نحن داخل المتصفح (Chrome)
+            // دائماً نعرض زر التحميل لأن الزائر غالباً ليس لديه التطبيق أو يريد تحميله
+            status.innerHTML = "أحدث إصدار متاح: " + latestVersion;
             status.style.color = "#333";
-            
             btn.innerHTML = "تحميل التطبيق";
-            btn.className = "action-btn btn-browser"; // لون داكن
+            btn.className = "action-btn btn-update";
             btn.onclick = startDownload;
             
+            // تغيير النص في الأسفل ليعرف أنه في المتصفح
             document.getElementById("installedVer").innerText = "نسخة الويب";
         }
     })
@@ -175,20 +162,20 @@ function checkGitHubUpdates(currentVersion) {
     });
 }
 
-// Fallback (إذا فتحت من المتصفح أو تأخر التطبيق في الرد)
+// Fallback (للمتصفح العادي إذا لم يأتِ رد من التطبيق)
 setTimeout(() => {
     if (document.getElementById("installedVer").innerText === "...") {
-        // نعتبره متصفح ونفحص التحديثات برقم 0
+        // نفترض أنه متصفح ونفحص التحديثات
         checkGitHubUpdates("0.0");
     }
 }, 3000);
 
-// 3. دالة بدء التحميل
+// دالة التحميل
 function startDownload() {
     if (!navigator.onLine) { alert("لا يوجد اتصال بالإنترنت"); return; }
     if (!downloadUrl) { alert("رابط التحميل غير جاهز"); return; }
 
-    // داخل التطبيق: شريط داخلي + تحميل عبر DownloadManager
+    // داخل التطبيق: استخدام الشريط الداخلي
     if (typeof Android !== 'undefined') {
         document.getElementById("mainBtn").style.display = "none";
         document.getElementById("progressArea").style.display = "block";
@@ -200,18 +187,18 @@ function startDownload() {
         const btn = document.getElementById("mainBtn");
         btn.innerText = "جاري التنزيل...";
         setTimeout(() => {
-             btn.innerText = "تحميل مرة أخرى";
+             btn.innerText = "تحميل التطبيق مرة أخرى";
         }, 3000);
     }
 }
 
-// 4. تحديث الشريط (يستدعيها التطبيق)
+// تحديث الشريط (للتطبيق)
 function updateProgress(percent) {
     document.getElementById("progressFill").style.width = percent + "%";
     document.getElementById("progressText").innerText = percent + "%";
 }
 
-// 5. اكتمال التحميل (يستدعيها التطبيق)
+// اكتمال التحميل (للتطبيق)
 function onDownloadComplete(path) {
     savedFilePath = path;
     document.getElementById("progressArea").style.display = "none";
@@ -219,16 +206,13 @@ function onDownloadComplete(path) {
     const btn = document.getElementById("mainBtn");
     btn.style.display = "block";
     btn.innerHTML = "تثبيت التحديث 📲";
-    btn.className = "action-btn btn-install"; // أزرق
-    
-    // عند الضغط يثبت
+    btn.className = "action-btn btn-install";
     btn.onclick = () => {
         if (typeof Android !== 'undefined') {
             Android.installApk(savedFilePath);
         }
     };
     
-    // محاولة تثبيت تلقائي
     setTimeout(() => {
         if (typeof Android !== 'undefined') {
             Android.installApk(savedFilePath);
